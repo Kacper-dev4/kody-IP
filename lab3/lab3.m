@@ -37,12 +37,31 @@ wsin  = randn(size(ysin))  * sqrt(0.1 * var(ysin));
 
 
 %% Zad3 
+% Metoda najmniejszych kwadratów
 N = length(w100); % liczba pomiarów
-M = 5; % liczba parametrów
+M = 3; % liczba parametrów
 for i=1:N-M
     for j=1:M+1
         U(i,j) = w100(N+2-j-i);
     end
 
 end
+ym100 = y100(M+1:N)';
+b100 = (U'*U)^(-1)*U'*ym100;
+
+yMNK100 = polyval(b100,p100);
+plot(p100,yMNK100)
+
+N = length(w100); % liczba pomiarów
+M = 3; % liczba parametrów
+for i=1:N-M
+    for j=1:M+1
+        U(i,j) = w1000(N+2-j-i);
+    end
+
+end
+ym1000 = y1000(M+1:N)';
+b1000 = (U'*U)^(-1)*U'*ym1000;
+
+
 
