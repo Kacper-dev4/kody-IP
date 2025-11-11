@@ -60,7 +60,7 @@ end
 y = w100(N:M)';    
 b100 = (U' * U) \ (U' * y);
 
-D100 = sum((U*b100-y).^2)/100;
+J 100 = sum((U*b100-y).^2)/100;
 
 
  [Ryu, lags] = xcorr(w100, p100, 'unbiased');
@@ -71,7 +71,7 @@ D100 = sum((U*b100-y).^2)/100;
 
 x = (0:N-1)';
 
-impulosowaPrawdziwa = impz(B, A, N);   % prawdziwa odpowiedź
+impulosowaPrawdziwa = impz(B, A, N);  
 figure(5)
 stem(x,impulosowaPrawdziwa(), 'b');
 hold on;
