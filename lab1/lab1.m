@@ -83,7 +83,7 @@ bnORG = bn;
 JMPLB = JMPLn;
 for k=1:N
 
-bnn = 5*(rand(1,5));%bn + mi * (rand(1,5)-0.5);
+bnn = bn + mi * (rand(1,5)-0.5);
 ynn = (bnn(1) + bnn(2)*u100) ./ (bnn(3) + bnn(4)*u100 + bnn(5)*u100.^2);
 JMPL100 = sum((y100z - ynn).^2);
 

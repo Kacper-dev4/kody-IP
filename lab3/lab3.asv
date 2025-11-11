@@ -310,19 +310,13 @@ legend('ML z curvefit', 'Odpowiedż skwantyzowana');
 xlabel('t [s]');
 ylabel('y(t)');
 
-Kgra = 1.9922;
-Tgra = 3;
-T0gra = 0.9;
- sys_gra = tf(Kgra, [Tgra 1], 'InputDelay', T0gra);
- y_gra = lsim ( sys_gra , u, t);
 
 figure;
 hold on;
-plot(t, y,  'LineWidth', 1.5);
-plot(t, y_gra, 'r--', 'LineWidth', 1.5);
-plot(t, y_best,'y--','LineWidth', 1.5); 
-plot(t, y_best2, 'k--', 'LineWidth', 1.5); 
-legend('Odpowiedź obiektu','Metoda graficzna','ML','ML z curvefit');
+plot(t, y, 'b', 'LineWidth', 1.5); 
+plot(t, y_best2, 'b', 'LineWidth', 1.5); 
+stairs(t, yq, 'r--');
+legend('ML z curvefit', 'Odpowiedż skwantyzowana');
 xlabel('t [s]');
 ylabel('y(t)');
 
