@@ -23,7 +23,7 @@ end
 
 GWMusre = GWMusre / ilePrzedzialow;
 N = probkiPrzedzial;
-GWMusre = GWMusre(1:floor(N/2)+1);
+
 f = (0:length(GWMusre)-1) * Fs / N;
 
 figure;
@@ -33,15 +33,15 @@ for i = 1:ilePrzedzialow
 end
 grid on;
 xlabel('Częstotliwość [Hz]');
-ylabel('Moduł');
+ylabel('GWM');
 title('Widma poszczególnych przedziałów');
 hold off;
 
 figure;
-plot(f, 20*log10(GWMusre), 'LineWidth', 2);
+plot(f, GWMusre);
 grid on;
 xlabel('Częstotliwość [Hz]');
-ylabel('Moduł [dB]');
+ylabel('GWM');
 title('Uśrednione widmo sygnału');
 xlim([0 Fs/2]);
 

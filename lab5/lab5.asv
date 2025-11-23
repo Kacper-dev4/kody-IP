@@ -71,7 +71,7 @@ ylabel('Amplituda');
 
 szum = x3;
 Fs = 10;
-[gwm,fx3] = odcinkoweUsre(szum,10,Fs);
+gwm = odcinkoweUsre(szum,10,Fs);
 
 %% Zad3
 
@@ -84,8 +84,8 @@ rng(0);
 szum = randn(N,1); 
 
 f1 = 5;   A1 = 2;   phi1 = 0;
-f2 = 10;  A2 = 1.5; phi2 = pi/3;
-f3 = 25;  A3 = 0.8; phi3 = pi/2;
+f2 = 20;  A2 = 1.5; phi2 = pi/3;
+f3 = 50;  A3 = 0.8; phi3 = pi/2;
 
 sinusoidy = A1*sin(2*pi*f1*t + phi1) + ...
             A2*sin(2*pi*f2*t + phi2) + ...
@@ -105,21 +105,6 @@ subplot(4,1,4); plot(t(1:2000), sygnal_mieszany(1:2000));
 title('4. Suma: sinusoidy + AR(2)'); grid on; xlabel('Czas [s]');
 
 %% Zad4
-Ts = 0.01;
-Fs = 1/Ts;
-[GWMszum, fszum] = odcinkoweUsre(szum,100,Fs);
-DTF = fft(szum);
-GWMszumZwyczajnie = abs(DTF);
-GWMszumZwyczajnie = GWMszumZwyczajnie(1:floor(N/2)+1);
-GWMszumZwyczajnie = (1/(N))*(GWMszumZwyczajnie).^2;
-f = (0:length(GWMszumZwyczajnie)-1) * Fs / N;
-figure
-hold on
-plot(f,GWMszumZwyczajnie);
-plot(fszum,GWMszum)
-xlabel('Częstotliwość [Hz]');
-ylabel('GWM');
-legend()
 
 
 %% Zad5
