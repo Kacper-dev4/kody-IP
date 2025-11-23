@@ -183,6 +183,7 @@ warbs_szum = model_szum.NoiseVariance;
 Psd_szum=abs(fft(1,1024)./fft(a_szum,1024)).^2*warbs_szum*Tprob;
 f_szum = (0:1024/2) * (Fs/1024);
 
+figure;
 plot(f_szum,Psd_szum(1:513))
 xlabel('Częstotliwość [Hz]')
 ylabel('Gęstość widmowa mocy')
@@ -196,6 +197,7 @@ warbs_sin = model_sin.NoiseVariance;
 Psd_sin=abs(fft(1,1024)./fft(a_sin,1024)).^2*warbs_sin*Tprob;
 f_sin = (0:1024/2) * (Fs/1024);
 
+figure;
 plot(f_sin,Psd_sin(1:513))
 xlabel('Częstotliwość [Hz]')
 ylabel('Gęstość widmowa mocy')
@@ -208,6 +210,7 @@ warbs_ar = model_ar.NoiseVariance;
 Psd_ar=abs(fft(1,1024)./fft(a_ar,1024)).^2*warbs_ar*Tprob;
 f_ar = (0:1024/2) * (Fs/1024);
 
+figure;
 plot(f_ar,Psd_ar(1:513))
 xlabel('Częstotliwość [Hz]')
 ylabel('Gęstość widmowa mocy')
@@ -220,6 +223,7 @@ warbs_mieszany = model_mieszany.NoiseVariance;
 Psd_mieszany=abs(fft(1,1024)./fft(a_mieszany,1024)).^2*warbs_mieszany*Tprob;
 f_mieszany = (0:1024/2) * (Fs/1024);
 
+figure;
 plot(f_mieszany,Psd_mieszany(1:513))
 xlabel('Częstotliwość [Hz]')
 ylabel('Gęstość widmowa mocy')
