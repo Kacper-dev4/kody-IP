@@ -83,9 +83,9 @@ t  = (0:N-1)'/Fs;
 rng(0);  
 szum = randn(N,1); 
 
-f1 = 5;   A1 = 2;   phi1 = 0;
-f2 = 10;  A2 = 1.5; phi2 = pi/3;
-f3 = 25;  A3 = 0.8; phi3 = pi/2;
+f1 = 1;   A1 = 2;   phi1 = 0;
+f2 = 2;  A2 = 1.5; phi2 = pi/3;
+f3 = 5;  A3 = 0.8; phi3 = pi/2;
 
 sinusoidy = A1*sin(2*pi*f1*t + phi1) + ...
             A2*sin(2*pi*f2*t + phi2) + ...
@@ -107,7 +107,10 @@ title('4. Suma: sinusoidy + AR(2)'); grid on; xlabel('Czas [s]');
 %% Zad4
 Ts = 0.01;
 Fs = 1/Ts;
-[GWMszum, fszum] = odcinkoweUsre(szum,100,Fs);
+podzial = 100;
+
+% biały szum
+[GWMszum, fszum] = odcinkoweUsre(szum,podzial,Fs);
 DTF = fft(szum);
 GWMszumZwyczajnie = abs(DTF);
 GWMszumZwyczajnie = GWMszumZwyczajnie(1:floor(N/2)+1);
@@ -115,11 +118,60 @@ GWMszumZwyczajnie = (1/(N))*(GWMszumZwyczajnie).^2;
 f = (0:length(GWMszumZwyczajnie)-1) * Fs / N;
 figure
 hold on
-plot(f,GWMszumZwyczajnie);
-plot(fszum,GWMszum)
+plot(f,10*log10(GWMszumZwyczajnie));
+plot(fszum,10*log10(GWMszum))
 xlabel('Częstotliwość [Hz]');
-ylabel('GWM');
-legend()
+ylabel('GWM(dB)');
+legend('Periodogram','Periodogram metoda uśrednianie odcinkowe')
+
+% sinusoidy
+
+[GWMsin, fsin] = odcinkoweUsre(sinusoidy,podzial,Fs);
+DTF = fft(sinusoidy);
+GWMsinZwyczajnie = abs(DTF);
+GWMsinZwyczajnie = GWMsinZwyczajnie(1:floor(N/2)+1);
+GWMsinZwyczajnie = (1/(N))*(GWMsinZwyczajnie).^2;
+f = (0:length(GWMsinZwyczajnie)-1) * Fs / N;
+figure
+hold on
+plot(f,10*log10(GWMsinZwyczajnie));
+plot(fsin,10*log10(GWMsin))
+xlabel('Częstotliwość [Hz]');
+ylabel('GWM(dB)');
+legend('Periodogram','Periodogram metoda uśrednianie odcinkowe')
+
+% AR
+
+[GWMar, far] = odcinkoweUsre(AR2,podzial,Fs);
+DTF = fft(AR2);
+GWMarZwyczajnie = abs(DTF);
+GWMarZwyczajnie = GWMarZwyczajnie(1:floor(N/2)+1);
+GWMarZwyczajnie = (1/(N))*(GWMarZwyczajnie).^2;
+f = (0:length(GWMarZwyczajnie)-1) * Fs / N;
+figure
+hold on
+plot(f,10*log10(GWMarZwyczajnie));
+plot(far,10*log10(GWMar))
+xlabel('Częstotliwość [Hz]');
+ylabel('GWM(dB)');
+legend('Periodogram','Periodogram metoda uśrednianie odcinkowe')
+
+% sygnal mieszany suma sinusoid i AR
+
+[GWMmieszany, fmieszany] = odcinkoweUsre(sygnal_mieszany,podzial,Fs);
+DTF = fft(sygnal_mieszany);
+GWMmieszanyZwyczajnie = abs(DTF);
+GWMmieszanyZwyczajnie = GWMmieszanyZwyczajnie(1:floor(N/2)+1);
+GWMmieszanyZwyczajnie = (1/(N))*(GWMmieszanyZwyczajnie).^2;
+f = (0:length(GWMmieszanyZwyczajnie)-1) * Fs / N;
+figure
+hold on
+plot(f,10*log10(GWMmieszanyZwyczajnie));
+plot(fmieszany,10*log10(GWMmieszany))
+xlabel('Częstotliwość [Hz]');
+ylabel('GWM(dB)');
+legend('Periodogram','Periodogram metoda uśrednianie odcinkowe')
+
 
 
 %% Zad5
