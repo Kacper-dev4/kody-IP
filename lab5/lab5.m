@@ -1,37 +1,111 @@
-clear all 
-clc
-N = 8;
-krone1 = eye(1,N);
-krone2 = zeros(1,N);
-krone2(4)=1;
+%% Zad1
+Fs = 10;         
+T = 0.1;         
+N = 8;           
+N2 = 1024;       
+f_bin = Fs / N2; 
+n1 = 0:N-1;      
+x1 = zeros(1, N);
+x1(1) = 1;       
+x2 = zeros(1, N);
+x2(4) = 1;     
+n3 = 0:N2-1;     
+f3 = 50 * f_bin; 
+x3 = sin(2*pi*f3*n3/Fs); 
+f4 = 50.3 * f_bin;
+x4 = sin(2*pi*f4*n3/Fs); 
+% Obliczanie FFT
+X1 = fft(x1, N);    
+X2 = fft(x2, N);    
+X3 = fft(x3, N2);   
+X4 = fft(x4, N2);   
+f = (0:N-1) * Fs / N;
+f2 = (0:N2-1) * Fs / N2;
+f2 = f2;
+% Rysowanie sygnałów w dziedzinie czasu
+figure;
+subplot(2,2,1);
+stem(n1, x1, 'filled');
+title('Delta Kroneckera umiejscowiona w chwili 0 (N=8)');
+xlabel('Czas (próbki)');
+ylabel('Amplituda');
+subplot(2,2,2);
+stem(n1, x2, 'filled');
+title('Delta Kroneckera umiejscowiona w chwili 3 (N=8)');
+xlabel('Czas (próbki)');
+ylabel('Amplituda');
+subplot(2,2,3);
+plot(n3, x3);
+title('Sinusoida (f = 50 razy bin)');
+xlabel('Czas (próbki)');
+ylabel('Amplituda');
+subplot(2,2,4);
+plot(n3, x4);
+title('Sinusoida (f = 50.3 razy bin)');
+xlabel('Czas (próbki)');
+ylabel('Amplituda');
+% Rysowanie widm w dziedzinie częstotliwości
+figure;
+subplot(2,2,1);
+plot(f, abs(X1));
+title('Widmo dla Delta Kroneckera umiejscowionej w chwili 0');
+xlabel('Częstotliwość (Hz)');
+ylabel('Amplituda');
+subplot(2,2,2);
+plot(f, abs(X2));
+title('Widmo dla Delta Kroneckera umiejscowionej w chwili 3');
+xlabel('Częstotliwość (Hz)');
+ylabel('Amplituda');
+subplot(2,2,3);
+plot(f2(1:512), abs(X3(1:512)));
+title('Widmo dla sinusoidy (f = 50 razy bin)');
+xlabel('Częstotliwość (Hz)');
+ylabel('Amplituda');
+subplot(2,2,4);
+plot(f2(1:512), abs(X4(1:512)));
+title('Widmo dla sinusoidy (f = 50.3 razy bin)');
+xlabel('Częstotliwość (Hz)');
+ylabel('Amplituda');
 
-Nsin = 1024;
-t = 0:0.01:10.23;
-A = 1;
+%% Zad2
 
-sin1 = A*sin(t*50*(2*pi/Nsin));
-sin2 = A*sin(t*50.3*(2*pi/Nsin));
+szum = x3;
+Fs = 10;
+gwm = odcinkoweUsre(szum,10,Fs);
 
-widmoKrone1 = fft(krone1);
-widmoKrone2 = fft(krone2);
+%% Zad3
 
-widmoSin1 = fft(sin1);
-widmoSin2 = fft(sin2);
 
-N1 = length(krone1);
-f1 = (0:N1-1)*(1/(t(2)-t(1))/N1);
+N  = 100000;     % liczba próbek
+Fs = 1000;       % częstotliwość próbkowania [Hz] – dowolna, ale wygodna
+t  = (0:N-1)'/Fs;
 
-N2 = length(sin1);
-f2 = (0:N2-1)*(1/(t(2)-t(1))/N2);
+rng(0);  
+szum = randn(N,1); 
 
-figure 
-plot(f1,abs(widmoKrone1),'o')
+f1 = 50;   A1 = 2;   phi1 = 0;
+f2 = 120;  A2 = 1.5; phi2 = pi/3;
+f3 = 300;  A3 = 0.8; phi3 = pi/2;
 
-figure
-plot(f1,abs(widmoKrone2),'o')
+sinusoidy = A1*sin(2*pi*f1*t + phi1) + ...
+            A2*sin(2*pi*f2*t + phi2) + ...
+            A3*sin(2*pi*f3*t + phi3);
+a = [1, -0.9, 0.16];  
+e = randn(N,1);
 
-figure
-plot(f2,abs(widmoSin1),'o')
+AR2 = filter(1, a, e);  
 
-figure
-plot(f2,abs(widmoSin2),'o')
+sygnal_mieszany = sinusoidy + AR2;
+
+figure('Position',[100 100 900 600]);
+subplot(4,1,1); plot(t(1:2000), szum(1:2000));      title('1. Biały szum N(0,1)');      grid on;
+subplot(4,1,2); plot(t(1:2000), sinusoidy(1:2000)); title('2. Suma 3 sinusoid');        grid on;
+subplot(4,1,3); plot(t(1:2000), AR2(1:2000));       title('3. Ciąg AR(2)');             grid on;
+subplot(4,1,4); plot(t(1:2000), sygnal_mieszany(1:2000)); 
+title('4. Suma: sinusoidy + AR(2)'); grid on; xlabel('Czas [s]');
+
+%% Zad4
+
+
+%% Zad5
+
