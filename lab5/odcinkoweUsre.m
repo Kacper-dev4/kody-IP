@@ -4,7 +4,7 @@ dlu = length(sygnal);
 probkiPrzedzial = floor(dlu / ilePrzedzialow);
 przedzialy = cell(1, ilePrzedzialow);
 GWM = cell(1, ilePrzedzialow);
-
+Tp = 1/Fs;
 
 for i = 1:ilePrzedzialow
     start_idx = (i-1)*probkiPrzedzial + 1;
@@ -23,7 +23,7 @@ end
 GWMusre = 0;
 N = probkiPrzedzial;
 for i = 1:ilePrzedzialow
- GWM{i} = (1/N)*GWM{i}.^2;
+ GWM{i} = (Tp/N)*GWM{i}.^2;
  GWMusre = GWMusre + GWM{i};   
 end
 

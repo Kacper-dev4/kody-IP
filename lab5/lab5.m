@@ -23,6 +23,7 @@ f = (0:N-1) * Fs / N;
 f2 = (0:N2-1) * Fs / N2;
 f2 = f2;
 % Rysowanie sygnałów w dziedzinie czasu
+
 figure;
 subplot(2,2,1);
 stem(n1, x1, 'filled');
@@ -44,6 +45,8 @@ plot(n3, x4);
 title('Sinusoida (f = 50.3 razy bin)');
 xlabel('Czas (próbki)');
 ylabel('Amplituda');
+
+
 % Rysowanie widm w dziedzinie częstotliwości
 figure;
 subplot(2,2,1);
@@ -67,11 +70,108 @@ title('Widmo dla sinusoidy (f = 50.3 razy bin)');
 xlabel('Częstotliwość (Hz)');
 ylabel('Amplituda');
 
-%% Zad2
 
-szum = x3;
-Fs = 10;
-[gwm,fx3] = odcinkoweUsre(szum,10,Fs);
+% chka. fazowa
+figure;
+subplot(2,2,1);
+plot(f, angle(X1));
+title('Delta Kroneckera umiejscowionej w chwili 0');
+xlabel('Częstotliwość (Hz)');
+ylabel('Faza');
+subplot(2,2,2);
+plot(f, angle(X2));
+title('Delta Kroneckera umiejscowionej w chwili 3');
+xlabel('Częstotliwość (Hz)');
+ylabel('Faza');
+subplot(2,2,3);
+plot(f2(1:512), angle(X3(1:512)));
+title('Sinusoida (f = 50 razy bin)');
+xlabel('Częstotliwość (Hz)');
+ylabel('Faza');
+subplot(2,2,4);
+plot(f2(1:512), angle(X4(1:512)));
+title('Sinusoida (f = 50.3 razy bin)');
+xlabel('Częstotliwość (Hz)');
+ylabel('Faza');
+
+% Część rzeczywista
+
+figure;
+subplot(2,2,1);
+plot(f, real(X1));
+title('Delta Kroneckera umiejscowionej w chwili 0');
+xlabel('Częstotliwość (Hz)');
+ylabel('Część rzeczywista');
+subplot(2,2,2);
+plot(f, real(X2));
+title('Delta Kroneckera umiejscowionej w chwili 3');
+xlabel('Częstotliwość (Hz)');
+ylabel('Część rzeczywista');
+subplot(2,2,3);
+plot(f2(1:512), real(X3(1:512)));
+title('Sinusoida (f = 50 razy bin)');
+xlabel('Częstotliwość (Hz)');
+ylabel('Część rzeczywista');
+subplot(2,2,4);
+plot(f2(1:512), real(X4(1:512)));
+title('Sinusoida (f = 50.3 razy bin)');
+xlabel('Częstotliwość (Hz)');
+ylabel('Część rzeczywista');
+
+% Część urojona
+figure;
+subplot(2,2,1);
+plot(f, imag(X1));
+title('Delta Kroneckera umiejscowionej w chwili 0');
+xlabel('Częstotliwość (Hz)');
+ylabel('Część urojona');
+subplot(2,2,2);
+plot(f, imag(X2));
+title('Delta Kroneckera umiejscowionej w chwili 3');
+xlabel('Częstotliwość (Hz)');
+ylabel('Część urojona');
+subplot(2,2,3);
+plot(f2, imag(X3));
+title('Sinusoida (f = 50 razy bin)');
+xlabel('Częstotliwość (Hz)');
+ylabel('Część urojona');
+subplot(2,2,4);
+plot(f2, imag(X4));
+title('Sinusoida (f = 50.3 razy bin)');
+xlabel('Częstotliwość (Hz)');
+ylabel('Część urojona');
+
+% chka. Nyquista
+
+figure;
+subplot(2,2,1);
+
+plot(real(X1), imag(X1),'o');
+axis equal
+title('Delta Kroneckera umiejscowionej w chwili 0');
+xlabel('Część rzeczywista');
+ylabel('Część urojona');
+subplot(2,2,2);
+
+plot(real(X2), imag(X2),'o');
+axis equal
+title('Delta Kroneckera umiejscowionej w chwili 3');
+xlabel('Część rzeczywista');
+ylabel('Część urojona');
+subplot(2,2,3);
+
+plot(real(X3), imag(X3),'o');
+axis equal
+title('Sinusoida (f = 50 razy bin)');
+xlabel('Część rzeczywista');
+ylabel('Część urojona');
+subplot(2,2,4);
+
+plot(real(X4), imag(X4),'o');
+axis equal
+title('Sinusoida (f = 50.3 razy bin)');
+xlabel('Część rzeczywista');
+ylabel('Część urojona');
 
 %% Zad3
 
@@ -83,9 +183,9 @@ t  = (0:N-1)'/Fs;
 rng(0);  
 szum = randn(N,1); 
 
-f1 = 1;   A1 = 2;   phi1 = 0;
-f2 = 2;  A2 = 1.5; phi2 = pi/3;
-f3 = 5;  A3 = 0.8; phi3 = pi/2;
+f1 = 5;   A1 = 2;   phi1 = 0;
+f2 = 12;  A2 = 1.5; phi2 = pi/3;
+f3 = 25;  A3 = 0.8; phi3 = pi/2;
 
 sinusoidy = A1*sin(2*pi*f1*t + phi1) + ...
             A2*sin(2*pi*f2*t + phi2) + ...
@@ -114,7 +214,7 @@ podzial = 100;
 DTF = fft(szum);
 GWMszumZwyczajnie = abs(DTF);
 GWMszumZwyczajnie = GWMszumZwyczajnie(1:floor(N/2)+1);
-GWMszumZwyczajnie = (1/(N))*(GWMszumZwyczajnie).^2;
+GWMszumZwyczajnie = (Ts/(N))*(GWMszumZwyczajnie).^2;
 f = (0:length(GWMszumZwyczajnie)-1) * Fs / N;
 figure
 hold on
@@ -130,7 +230,7 @@ legend('Periodogram','Periodogram metoda uśrednianie odcinkowe')
 DTF = fft(sinusoidy);
 GWMsinZwyczajnie = abs(DTF);
 GWMsinZwyczajnie = GWMsinZwyczajnie(1:floor(N/2)+1);
-GWMsinZwyczajnie = (1/(N))*(GWMsinZwyczajnie).^2;
+GWMsinZwyczajnie = (Ts/(N))*(GWMsinZwyczajnie).^2;
 f = (0:length(GWMsinZwyczajnie)-1) * Fs / N;
 figure
 hold on
@@ -146,7 +246,7 @@ legend('Periodogram','Periodogram metoda uśrednianie odcinkowe')
 DTF = fft(AR2);
 GWMarZwyczajnie = abs(DTF);
 GWMarZwyczajnie = GWMarZwyczajnie(1:floor(N/2)+1);
-GWMarZwyczajnie = (1/(N))*(GWMarZwyczajnie).^2;
+GWMarZwyczajnie = (Ts/(N))*(GWMarZwyczajnie).^2;
 f = (0:length(GWMarZwyczajnie)-1) * Fs / N;
 figure
 hold on
@@ -162,7 +262,7 @@ legend('Periodogram','Periodogram metoda uśrednianie odcinkowe')
 DTF = fft(sygnal_mieszany);
 GWMmieszanyZwyczajnie = abs(DTF);
 GWMmieszanyZwyczajnie = GWMmieszanyZwyczajnie(1:floor(N/2)+1);
-GWMmieszanyZwyczajnie = (1/(N))*(GWMmieszanyZwyczajnie).^2;
+GWMmieszanyZwyczajnie = (Ts/(N))*(GWMmieszanyZwyczajnie).^2;
 f = (0:length(GWMmieszanyZwyczajnie)-1) * Fs / N;
 figure
 hold on
@@ -228,3 +328,40 @@ plot(f_mieszany,Psd_mieszany(1:513))
 xlabel('Częstotliwość [Hz]')
 ylabel('Gęstość widmowa mocy')
 
+%% Zad6
+
+figure;
+hold on
+plot(f,10*log10(GWMszumZwyczajnie));
+plot(fszum,10*log10(GWMszum))
+plot(f_szum,10*log10(Psd_szum(1:513)))
+xlabel('Częstotliwość [Hz]')
+ylabel('GWM(dB)')
+legend('Periodogram','Periodogram metoda uśrednianie odcinkowe','Periodogram metoda polecenia Psd')
+
+figure;
+hold on
+plot(f,10*log10(GWMsinZwyczajnie));
+plot(fsin,10*log10(GWMsin))
+plot(f_sin,10*log10(Psd_sin(1:513)))
+xlabel('Częstotliwość [Hz]')
+ylabel('GWM(dB)')
+legend('Periodogram','Periodogram metoda uśrednianie odcinkowe','Periodogram metoda polecenia Psd')
+
+figure
+hold on
+plot(f,10*log10(GWMarZwyczajnie));
+plot(far,10*log10(GWMar))
+plot(f_ar,10*log10(Psd_ar(1:513)))
+xlabel('Częstotliwość [Hz]')
+ylabel('GWM(dB)')
+legend('Periodogram','Periodogram metoda uśrednianie odcinkowe','Periodogram metoda polecenia Psd')
+
+figure;
+hold on
+plot(f,10*log10(GWMmieszanyZwyczajnie));
+plot(fmieszany,10*log10(GWMmieszany))
+plot(f_mieszany,10*log10(Psd_mieszany(1:513)))
+xlabel('Częstotliwość [Hz]')
+ylabel('GWM(dB)')
+legend('Periodogram','Periodogram metoda uśrednianie odcinkowe','Periodogram metoda polecenia Psd')

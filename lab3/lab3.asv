@@ -43,22 +43,17 @@ wsin  = ysin + randn(size(ysin))  * sqrt(0.1 * var(ysin));
 wsin1000  = ysin1000 + randn(size(ysin1000))  * sqrt(0.1 * var(ysin1000));
 %% Zad3
 M =length(y100);
-N = 10;
+N = 12;
 U = zeros(M-N+1, N);
 
 % MNK 100 
-u = p100;
-U = zeros(M, N);
-for k = 1:M
-    for i = 1:N
-        if (k-i+1) > 0
-            U(k,i) = u(k-i+1);
-        end
-    end
+for k = N:M
+   U(k-N+1,:) = p100(k:-1:k-N+1);
 end
-
-y = w100';
-
+y = w100(N:M)';   
+b100 = (U' * U) \ (U' * y);
+impulosowaPrawdziwa = impz(B, A, N); 
+J100 = sum((b100 - impulosowaPrawdziwa).^2);
 
 % korelacyjna 100
 [Ryu, ~] = xcorr(w100, p100, 'unbiased');
@@ -80,20 +75,11 @@ M =length(y1000);
 %N = 10;
 
 % MNK 1000
-
-u = p1000;
-U = zeros(M, N);
-for k = 1:M
-    for i = 1:N
-        if (k-i+1) > 0
-            U(k,i) = u(k-i+1);
-        end
-    end
+U = zeros(M-N+1, N);
+for k = N:M
+   U(k-N+1,:) = p1000(k:-1:k-N+1);
 end
-
-y = w1000';
-
- 
+y = w1000(N:M)';   
 b1000 = (U' * U) \ (U' * y);
 impulosowaPrawdziwa = impz(B, A, N); 
 J1000 = sum((b1000 - impulosowaPrawdziwa).^2);
@@ -118,18 +104,13 @@ ylabel('h[n]');
 M =length(ysin);
 %N = 10;
 
-u = psin;
-U = zeros(M, N);
-for k = 1:M
-    for i = 1:N
-        if (k-i+1) > 0
-            U(k,i) = u(k-i+1);
-        end
-    end
+% MNK sinusy 100
+U = zeros(M-N+1, N);
+for k = N:M
+   U(k-N+1,:) = psin(k:-1:k-N+1);
 end
-
-y = wsin';
-
+ 
+y = wsin(N:M)';   
 bsin = (U' * U) \ (U' * y);
 impulosowaPrawdziwa = impz(B, A, N);
 
@@ -153,20 +134,18 @@ M =length(ysin1000);
 %N = 10;
 
 % MNK Sinusy 1000
+U = zeros(M-N+1, N);
 
-u = psin1000;
-U = zeros(M, N);
-for k = 1:M
-    for i = 1:N
-        if (k-i+1) > 0
-            U(k,i) = u(k-i+1);
-        end
-    end
+for k = N:M
+   U(k-N+1,:) = psin1000(k:-1:k-N+1);
 end
+y = wsin1000(N:M)';  
 
-y = wsin1000';
-
-
+U = zeros(M-N,N+1);
+u = psin1000(end:-1:1);
+for i=N:M
+    U(i-N+1,:) = u(i-N+1);
+end
 bsin1000 = (U' * U) \ (U' * y);
 impulosowaPrawdziwa = impz(B, A, N); 
 Jsin1000 = sum((bsin1000 - impulosowaPrawdziwa).^2);
