@@ -227,39 +227,7 @@ ylim([-0.7,0.1])
 
 %% c)
 
-% 945
-data945 = iddata(y945, u945, 1);   
 
-na = 3;
-nb = 2;
-nk = 1;
 
-sys_iv = iv4(data945, [na nb nk]);
-[b, a] = tfdata(sys_iv, 'v');
-Chtykaaf = fft(b, 1024) ./ fft(a, 1024);
 
-figure;
-plot(real(Chtykaaf(1:513)), imag(Chtykaaf(1:513)), 'o')
-xlabel('Re(G)')
-ylabel('Im(G)')
-title('Charakterystyka Nyquista dla danych 945')
-grid on
-
-% 1130
-data1130 = iddata(y1130, u1130, 1);    
-
-na = 3;
-nb = 2;
-nk = 1;
-
-sys_iv = iv4(data1130, [na nb nk]);
-[b, a] = tfdata(sys_iv, 'v');
-Chtykaaf = fft(b, 1024) ./ fft(a, 1024);
-
-figure;
-plot(real(Chtykaaf(1:513)), imag(Chtykaaf(1:513)), 'o')
-xlabel('Re(G)')
-ylabel('Im(G)')
-title('Charakterystyka Nyquista dla danych 1130')
-grid on
 
