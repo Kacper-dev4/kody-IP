@@ -11,7 +11,7 @@ wyjscie945 = load('wyjscie945');
 U945 = fft(wejscie945,1024);
 Y945 = fft(wyjscie945,1024);
 
-G945 = Y945./U945;
+G945 = Y945./U9lab745;
 
 figure;
 plot(real(G945(1:513)),imag(G945(1:513)),'o')
@@ -262,4 +262,7 @@ xlabel('Re(G)')
 ylabel('Im(G)')
 title('Charakterystyka Nyquista dla danych 1130')
 grid on
+
+
+
 

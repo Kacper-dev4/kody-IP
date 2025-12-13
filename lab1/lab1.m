@@ -131,7 +131,6 @@ y5_1000 = (B(1) + B(2)*u1000) ./ (B(3) + B(4)*u1000 + B(5)*u1000.^2);
 %% Zad 6 Metoda poszukiwań losowych z dodatkowym elementem 
 
 N = 100;
-
 bn = 5*(rand(1,5));
 
 yn = (bn(1) + bn(2)*u100) ./ (bn(3) + bn(4)*u100 + bn(5)*u100.^2);
