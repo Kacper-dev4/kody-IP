@@ -1,9 +1,0 @@
-function [b] = LMS(y,u,b0,mi)
-
-N = length(y);
-for i=3:N
-    fi = [u(i-1); -y(i-1); -u(i-2)];
-    b(:,:,i) = b(:,:,i-1) + mi*fi
-end
-end
-
