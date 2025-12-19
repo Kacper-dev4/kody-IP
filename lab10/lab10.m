@@ -1,0 +1,199 @@
+clear all
+clc
+
+%% Zad2 i 4 
+N = 1000;   
+sigma2 = 1;            
+
+us = sqrt(sigma2)*randn(N,1);
+
+a1 = -1.2;
+a2 =  0.36;
+b1 =  0.6;
+
+A = [1 a1 a2];
+B = [0 b1];               
+
+ys = filter(B, A, us);
+dBn = 1;
+dAn =2;
+liczbaneuronow = 10; 
+
+%us %wektor zawierający wartości sygnału wejściowego
+%ys %wektor zawierający wartości sygnału wyjściowego
+us=num2cell(us');
+ys=num2cell(ys');
+%Wybór algorytmu uczenia sieci neuronowej
+% Algorytmy uczenia można wybrać korzystając z polecenia: help nntrain
+% 'trainlm' – wsteczna propagacja błędu Levenberga-Marquardta
+% 'trainbr' – wsteczna propagacja błędu Bayesian Regulation
+% 'trainscg' - wsteczna propagacja błędu Scaled conjugate gradient
+trainFcn = 'trainlm'; % wybór algorytmu Levenberga-Marquardta
+% Deklaracja struktury autoregresyjnej sieci neuronowej z zewnętrznym
+%wejściem i jej definicja
+inputDelays = 0:dBn;
+feedbackDelays = 1:dAn;
+hiddenLayerSize = liczbaneuronow;
+net = narxnet(inputDelays,feedbackDelays,hiddenLayerSize,'open',trainFcn);
+% Przygotowanie danych do uczenia sieci neuronowej i jej symulacji
+[x,xi,ai,t] = preparets(net,us,{},ys);
+% Podział danych na dane do uczenia, walidacji i testowania
+net.divideParam.trainRatio = 70/100;
+net.divideParam.valRatio = 15/100;
+net.divideParam.testRatio = 15/100;
+% Uczenie sieci neuronowej
+[net,tr] = train(net,x,t,xi,ai);
+%Testowanie sieci neuronowej
+%Wyliczanie wyjść sieci neuronowej dla danych do uczenia
+y = net(x,xi,ai);
+%Wyliczanie błędów modelowania
+e = gsubtract(t,y);
+%Wyliczanie średniokwadratowego błędu modelowania
+mse_zad2 = perform(net,t,y);
+% Rysowanie wyjść obiektu i błędu modelowania
+figure,plot(cell2mat(ys))
+hold on
+plot(cell2mat(e),'r')
+legend('y obiektu','e modelowania')
+
+figure;
+hold on
+plot(cell2mat(ys))
+plot(cell2mat([0,0,y]),'--')
+legend('y obiektu', 'y modelu')
+
+%% Zad3 i 5
+
+N = 1000;
+sigma2 = 1;
+
+us = sqrt(sigma2) * randn(N,1);
+
+a1 = -0.71;
+a2 =  0.36;
+b1 =  0.6;
+
+A = [1 a1 a2];
+B = [0 b1];      
+
+v = filter(B, A, us);   
+c = 1.0;
+d = 0.1;
+
+ys = c*v + d*v.^3;
+
+dBn = 1;
+dAn =2;
+liczbaneuronow = 10; 
+
+%us %wektor zawierający wartości sygnału wejściowego
+%ys %wektor zawierający wartości sygnału wyjściowego
+us=num2cell(us');
+ys=num2cell(ys');
+%Wybór algorytmu uczenia sieci neuronowej
+% Algorytmy uczenia można wybrać korzystając z polecenia: help nntrain
+% 'trainlm' – wsteczna propagacja błędu Levenberga-Marquardta
+% 'trainbr' – wsteczna propagacja błędu Bayesian Regulation
+% 'trainscg' - wsteczna propagacja błędu Scaled conjugate gradient
+trainFcn = 'trainlm'; % wybór algorytmu Levenberga-Marquardta
+% Deklaracja struktury autoregresyjnej sieci neuronowej z zewnętrznym
+%wejściem i jej definicja
+inputDelays = 0:dBn;
+feedbackDelays = 1:dAn;
+hiddenLayerSize = liczbaneuronow;
+net = narxnet(inputDelays,feedbackDelays,hiddenLayerSize,'open',trainFcn);
+% Przygotowanie danych do uczenia sieci neuronowej i jej symulacji
+[x,xi,ai,t] = preparets(net,us,{},ys);
+% Podział danych na dane do uczenia, walidacji i testowania
+net.divideParam.trainRatio = 70/100;
+net.divideParam.valRatio = 15/100;
+net.divideParam.testRatio = 15/100;
+% Uczenie sieci neuronowej
+[net,tr] = train(net,x,t,xi,ai);
+%Testowanie sieci neuronowej
+%Wyliczanie wyjść sieci neuronowej dla danych do uczenia
+y = net(x,xi,ai);
+%Wyliczanie błędów modelowania
+e = gsubtract(t,y);
+%Wyliczanie średniokwadratowego błędu modelowania
+mse_zad3 = perform(net,t,y);
+% Rysowanie wyjść obiektu i błędu modelowania
+figure,plot(cell2mat(ys))
+hold on
+plot(cell2mat(e),'r')
+legend('y obiektu','e modelowania')
+
+figure;
+hold on
+plot(cell2mat(ys))
+plot(cell2mat([0,0,y]),'--')
+legend('y obiektu', 'y modelu')
+
+
+%% Zad 6
+
+
+N = 1000;
+sigma2 = 1;
+
+
+u = sqrt(sigma2)*randn(N,1);
+
+
+a1 = -1.2;
+a2 =  0.36;
+b1 =  0.6;
+
+A = [1 a1 a2];
+B = [0 b1];        
+
+v = filter(B, A, u);
+
+c = 1.0;
+d = 0.1;
+
+y = c*v + d*v.^3;   
+
+L = 3;  
+
+us = y(1:end-L);    
+ys = u(1+L:end);    
+
+us = num2cell(us');
+ys = num2cell(ys');
+
+dBn = 2;              
+dAn = 2;              
+liczbaneuronow = 15;
+
+trainFcn = 'trainlm';
+
+inputDelays    = 0:dBn;
+feedbackDelays = 1:dAn;
+
+net = narxnet(inputDelays, feedbackDelays, ...
+              liczbaneuronow, 'open', trainFcn);
+
+[x, xi, ai, t] = preparets(net, us, {}, ys);
+
+net.divideParam.trainRatio = 0.7;
+net.divideParam.valRatio   = 0.15;
+net.divideParam.testRatio  = 0.15;
+
+[net, tr] = train(net, x, t, xi, ai);
+y = net(x, xi, ai);
+e = gsubtract(t, y_hat);
+mse_zad6 = perform(net, t, y_hat);
+
+figure,plot(cell2mat(ys))
+hold on
+plot(cell2mat(e),'r')
+legend('y obiektu','e modelowania')
+
+figure;
+hold on
+plot(cell2mat(ys))
+plot(cell2mat([0,0,y]),'--')
+legend('y obiektu', 'y modelu')
+
+

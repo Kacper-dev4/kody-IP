@@ -13,11 +13,11 @@ a1Rzeczywiste = zeros(1,N);
 a2Rzeczywiste = zeros(1,N);
 
 wariancja1 = 1;
-%wariancja2 = 0.2;
-wariancja2 = 0;
+wariancja2 = 0.2;
+%wariancja2 = 0;
 u = sqrt(wariancja1) * randn(1,N);
 %u = ones(1,N);
-u(1:99) = 0;
+%u(1:99) = 0;
 %u = 2 * ones(1,N);
 e = sqrt(wariancja2) * randn(1,N);
 y = zeros(1,N);
@@ -52,13 +52,14 @@ ylabel('y(i)')
 
 %% Zad3 WRLS
 
-bWRLS = WRLS(y,u,[100,0,0;0,100,0;0,0,100],[0;0;0],0.955);
+bWRLS = WRLS(y,u,[100,0,0;0,100,0;0,0,100],[0;0;0],0.5);
 
 figure
 hold on
 plot(squeeze(bWRLS(1,1,:)))
 plot(squeeze(bWRLS(2,1,:)))
 plot(squeeze(bWRLS(3,1,:)))
+
 grid on
 legend('WRLS b0','WRLS a1','WRLS a2')
 xlabel('i')
@@ -94,7 +95,7 @@ bladWRLS = sum((squeeze(bWRLS(1,1,:)) - b0Rzeczywiste').^2)/N ...
 
 
 %% LMS
-bLMS = LMS(y,u,[0;0;0],[ 0.0069 ;0.000183; 0.000183]);
+bLMS = LMS(y,u,[0;0;0],0.0001);%[ 0.0008 ;0.000853; 0.000853]);
 
 figure
 hold on
