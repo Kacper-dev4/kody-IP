@@ -41,7 +41,8 @@ for i = 3:N
 
     b(:,:,i) = b_prev + k*(y(i) - fi'*b_prev);
 
-    P(:,:,i) = (1/alfa)*(P_prev - k*fi'*P_prev);
+    %P(:,:,i) = (1/alfa)*(P_prev - k*fi'*P_prev);
+    P(:,:,i) = (1/alfa)*(P_prev - ((P_prev*fi*fi'*P_prev)/(alfa+fi'*P_prev*fi)));
 end
 end
 

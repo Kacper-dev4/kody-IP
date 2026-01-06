@@ -2,11 +2,15 @@
 clear all
 clc
 
+set(groot, 'defaultLineLineWidth', 1);
+set(groot, 'defaultFigureColor', 'w');
+set(groot, 'defaultAxesColor', 'w');
+
 %% Zad 1 i 2 
 N = 5000;
 b0 = 1;
 a1 = 1.5;
-a2 = 1;
+a2 = 0.8;
 
 b0Rzeczywiste = zeros(1,N);
 a1Rzeczywiste = zeros(1,N);
@@ -35,7 +39,7 @@ for i=1:N
             y(i) = b0*u(i-1)+e(i)-a1*y(i-1)-a2*y(i-2);
         case 2500
             a1 = 1.5;
-            a2 = 1;
+            a2 = 0.8;
             y(i) = b0*u(i-1)+e(i)-a1*y(i-1)-a2*y(i-2);
         otherwise
     y(i) = b0*u(i-1)+e(i)-a1*y(i-1)-a2*y(i-2);
@@ -49,6 +53,9 @@ figure;
 plot(y)
 xlabel('i')
 ylabel('y(i)')
+
+
+
 
 %% Zad3 WRLS
 
@@ -66,6 +73,7 @@ xlabel('i')
 ylabel('Wartości parametrów')
 
 figure
+subplot(3,1,1)
 hold on
 plot(squeeze(bWRLS(1,1,:)))
 plot(b0Rzeczywiste)
@@ -73,7 +81,7 @@ legend('WRLS b0', 'Rzeczywiste b0')
 xlabel('i')
 ylabel('Wartości parametrów')
 
-figure
+subplot(3,1,2)
 hold on
 plot(squeeze(bWRLS(2,1,:)))
 plot(a1Rzeczywiste)
@@ -81,7 +89,7 @@ legend('WRLS a1', 'Rzeczywiste a1')
 xlabel('i')
 ylabel('Wartości parametrów')
 
-figure
+subplot(3,1,3)
 hold on
 plot(squeeze(bWRLS(3,1,:)))
 plot(a2Rzeczywiste)
@@ -95,7 +103,7 @@ bladWRLS = sum((squeeze(bWRLS(1,1,:)) - b0Rzeczywiste').^2)/N ...
 
 
 %% LMS
-bLMS = LMS(y,u,[0;0;0],0.0001);%[ 0.0008 ;0.000853; 0.000853]);
+bLMS = LMS(y,u,[0;0;0],0.01);%[ 0.0008 ;0.000853; 0.000853]);
 
 figure
 hold on
@@ -108,6 +116,7 @@ xlabel('i')
 ylabel('Wartości parametrów')
 
 figure
+subplot(3,1,1)
 hold on
 plot(squeeze(bLMS(1,1,:)))
 plot(b0Rzeczywiste)
@@ -115,7 +124,7 @@ legend('LMS b0', 'Rzeczywiste b0')
 xlabel('i')
 ylabel('Wartości parametrów')
 
-figure
+subplot(3,1,2)
 hold on
 plot(squeeze(bLMS(2,1,:)))
 plot(a1Rzeczywiste)
@@ -123,7 +132,7 @@ legend('LMS a1', 'Rzeczywiste a1')
 xlabel('i')
 ylabel('Wartości parametrów')
 
-figure
+subplot(3,1,3)
 hold on
 plot(squeeze(bLMS(3,1,:)))
 plot(a2Rzeczywiste)

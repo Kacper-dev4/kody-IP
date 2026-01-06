@@ -1,6 +1,7 @@
 clear all
 clc
-
+set(groot, 'defaultFigureColor', 'w');
+set(groot, 'defaultAxesColor', 'w');
 %% Zad2 i 4 
 N = 1000;   
 sigma2 = 1;            
@@ -55,12 +56,16 @@ figure,plot(cell2mat(ys))
 hold on
 plot(cell2mat(e),'r')
 legend('y obiektu','e modelowania')
+xlabel('i')
+ylabel('y(i), e(i)')
 
 figure;
 hold on
 plot(cell2mat(ys))
 plot(cell2mat([0,0,y]),'--')
 legend('y obiektu', 'y modelu')
+xlabel('i')
+ylabel('y(i)')
 
 %% Zad3 i 5
 
@@ -122,13 +127,16 @@ figure,plot(cell2mat(ys))
 hold on
 plot(cell2mat(e),'r')
 legend('y obiektu','e modelowania')
+xlabel('i')
+ylabel('y(i), e(i)')
 
 figure;
 hold on
 plot(cell2mat(ys))
 plot(cell2mat([0,0,y]),'--')
 legend('y obiektu', 'y modelu')
-
+xlabel('i')
+ylabel('y(i)')
 
 %% Zad 6
 
