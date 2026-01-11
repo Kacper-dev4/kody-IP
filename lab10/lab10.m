@@ -29,7 +29,7 @@ ys=num2cell(ys');
 % 'trainlm' – wsteczna propagacja błędu Levenberga-Marquardta
 % 'trainbr' – wsteczna propagacja błędu Bayesian Regulation
 % 'trainscg' - wsteczna propagacja błędu Scaled conjugate gradient
-trainFcn = 'trainlm'; % wybór algorytmu Levenberga-Marquardta
+trainFcn = 'trainbr'; % wybór algorytmu Levenberga-Marquardta
 % Deklaracja struktury autoregresyjnej sieci neuronowej z zewnętrznym
 %wejściem i jej definicja
 inputDelays = 0:dBn;
@@ -100,7 +100,7 @@ ys=num2cell(ys');
 % 'trainlm' – wsteczna propagacja błędu Levenberga-Marquardta
 % 'trainbr' – wsteczna propagacja błędu Bayesian Regulation
 % 'trainscg' - wsteczna propagacja błędu Scaled conjugate gradient
-trainFcn = 'trainlm'; % wybór algorytmu Levenberga-Marquardta
+trainFcn = 'trainbr'; % wybór algorytmu Levenberga-Marquardta
 % Deklaracja struktury autoregresyjnej sieci neuronowej z zewnętrznym
 %wejściem i jej definicja
 inputDelays = 0:dBn;
@@ -144,7 +144,6 @@ ylabel('y(i)')
 N = 1000;
 sigma2 = 1;
 
-
 u = sqrt(sigma2)*randn(N,1);
 
 
@@ -170,9 +169,9 @@ ys = u(1+L:end);
 us = num2cell(us');
 ys = num2cell(ys');
 
-dBn = 2;              
+dBn = 1;              
 dAn = 2;              
-liczbaneuronow = 15;
+liczbaneuronow = 50;
 
 trainFcn = 'trainlm';
 
@@ -190,8 +189,8 @@ net.divideParam.testRatio  = 0.15;
 
 [net, tr] = train(net, x, t, xi, ai);
 y = net(x, xi, ai);
-e = gsubtract(t, y_hat);
-mse_zad6 = perform(net, t, y_hat);
+e = gsubtract(t, y);
+mse_zad6 = perform(net, t, y);
 
 figure,plot(cell2mat(ys))
 hold on
