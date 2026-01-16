@@ -4,7 +4,7 @@ close all
 set(groot, 'defaultFigureColor', 'w');
 set(groot, 'defaultAxesColor', 'w');
 
-%% Parametry wspólne i symulacja przetwornika A/C
+
 N = 10000; 
 sigma2 = 1;
 u_noise = sqrt(sigma2) * randn(N, 1);
