@@ -119,18 +119,18 @@ yDane = y(1:100);
 uDane = u(1:100);
 dane = iddata(yDane, uDane);
 
-model_zad4b = arx(dane, [na nb k]);
+model_zad4a = arx(dane, [na nb k]);
 
-A_otwarty_zad4b = model_zad4b.A;
-B_otwarty_zad4b = model_zad4b.B;
+A_otwarty_zad4a = model_zad4a.A;
+B_otwarty_zad4a = model_zad4a.B;
 
 figure
 plot(y(1:100));
 hold on
 
-b0 = B_otwarty_zad4b(3);
-a1 = A_otwarty_zad4b(2);
-a2 = A_otwarty_zad4b(3);
+b0 = B_otwarty_zad4a(3);
+a1 = A_otwarty_zad4a(2);
+a2 = A_otwarty_zad4a(3);
 out = sim("simLab11.slx");
 plot(y(1:100),'--');
 y = out.y.Data;
