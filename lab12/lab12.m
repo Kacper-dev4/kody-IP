@@ -16,3 +16,17 @@ grid on;
 title('GWM');
 xlabel('Częstotliwość [Hz]');
 ylabel('Moc [dB/Hz]');
+
+
+
+[sig, Fs] = audioread("nagranie.wav");
+
+[GWM, f] = odcinkoweUsre(sig, 100, Fs);
+
+figure;
+plot(f, 10*log10(GWM));
+grid on;
+xlabel('Częstotliwość [Hz]');
+ylabel('GWM [dB/Hz]');
+title('Gęstość widmowa mocy – metoda Welcha');
+xlim([0 Fs/2]);
