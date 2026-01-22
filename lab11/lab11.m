@@ -11,7 +11,7 @@ a2 = -3.5;
 
 licznik = b0;
 mianownik = [1, a1, a2];
-G = tf(licznik, mianownik, -1); % -1 oznacza czas dyskretny (nieokreślony Ts)
+G = tf(licznik, mianownik, -1); 
 
 
 figure;
@@ -23,6 +23,7 @@ rlocus(G)
 out = sim("simLab11.slx");
 
 y = out.y.Data;
+u = out.u.Data;
 figure
 plot(y(1:100));
 xlabel('i')
@@ -34,8 +35,12 @@ na = 2;
 nb = 1;
 k = 2;
 
-yDane = y(1:100);
-uDane = u(1:100);
+out = sim("simLab11.slx");
+y = out.y.Data;
+u = out.u.Data;
+
+yDane = y;
+uDane = u;
 dane = iddata(yDane, uDane);
 
 model_zad3 = arx(dane, [na nb k]);
@@ -64,7 +69,9 @@ legend('Obiekt','Model')
 
 
 %% a)
-
+na = 2;
+nb = 1;
+k = 2;
 kr = 3.75;
 w = 1;
 
@@ -102,7 +109,9 @@ legend('Obiekt','Model')
 
 %% b) to samo co poprzednio należy dodać dodtkowy sygnał identyfikujący w simulinku
 
-
+na = 2;
+nb = 1;
+k = 2;
 kr = 3.75;
 w = 1;
 
@@ -137,4 +146,85 @@ y = out.y.Data;
 xlabel('i')
 ylabel('y(i)')
 legend('Obiekt','Model')
+
+%% c) jak w a) tylko dodać fitr FIR w simulink
+na = 2;
+nb = 1;
+k = 2;
+kr = 3.75;
+w = 1;
+
+b0 = 1;
+a1 = 1; 
+a2 = -3.5;  
+
+out = sim("simLab11.slx");
+
+y = out.y.Data;
+u = out.u.Data;
+
+yDane = y(1:100);
+uDane = u(1:100);
+dane = iddata(yDane, uDane);
+
+model_zad4c = arx(dane, [na nb k]);
+
+A_otwarty_zad4c = model_zad4c.A;
+B_otwarty_zad4c = model_zad4c.B;
+
+figure
+plot(y(1:100));
+hold on
+
+b0 = B_otwarty_zad4c(3);
+a1 = A_otwarty_zad4c(2);
+a2 = A_otwarty_zad4c(3);
+out = sim("simLab11.slx");
+plot(y(1:100),'--');
+y = out.y.Data;
+xlabel('i')
+ylabel('y(i)')
+legend('Obiekt','Model')
+
+%% d)
+
+na = 2;
+nb = 1;
+k = 2;
+kr = 3.5;
+w = 1;
+
+b0 = 1;
+a1 = 1; 
+a2 = -3.5;  
+
+out = sim("simLab11.slx");
+
+y = out.y.Data;
+u = out.u.Data;
+
+yDane = y;
+uDane = u;
+dane = iddata(yDane, uDane);
+
+model_zad4d = arx(dane, [na nb k]);
+
+A_otwarty_zad4d = model_zad4d.A;
+B_otwarty_zad4d = model_zad4d.B;
+
+figure
+plot(y);
+hold on
+
+b0 = B_otwarty_zad4d(3);
+a1 = A_otwarty_zad4d(2);
+a2 = A_otwarty_zad4d(3);
+out = sim("simLab11.slx");
+plot(y,'--');
+y = out.y.Data;
+xlabel('i')
+ylabel('y(i)')
+legend('Obiekt','Model')
+
+
 
